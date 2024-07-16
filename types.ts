@@ -47,30 +47,41 @@ export interface Company {
   id?: string;
   createdBy: string;
   name: string;
-  logo: string; // URL
+  // logo: string; // URL
   website: string;
-  description: string;
-  jobs: string[]; // Array of jobIDs
+  description?: string;
+  jobs?: string[]; // Array of jobIDs
   createdAt?: string;
   updatedAt?: string;
 }
 
 // Job summary type for company job page
 export interface JobSummary {
+  companyName: string;
+  companyLogo: string;
   jobID: string;
   jobTitle: string;
+  remote: "On-site" | "Remote" | "Hybrid";
   type: "Project" | "Part-time" | "Full-time";
   location: {
     country: string;
     state: string;
     city: string;
   };
-  timeOfCreation: Date;
-  updatedAt: Date;
+  timeOfCreation?: string;
+  updatedAt?: string;
 }
 
 // Company job page type
 export interface CompanyJobPage {
   companyID: string;
   jobs: JobSummary[];
+}
+
+export interface ComapanyPage {
+  id?: string;
+  name: string;
+  // logo: string;
+  website: string;
+  createdBy: string;
 }

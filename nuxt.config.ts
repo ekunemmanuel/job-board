@@ -13,12 +13,7 @@ export default defineNuxtConfig({
     })(),
   },
 
-  modules: [
-    "@nuxt/ui",
-    "nuxt-vuefire",
-    "@vueuse/nuxt",
-    "@nuxt/image",
-  ],
+  modules: ["@nuxt/ui", "nuxt-vuefire", "@vueuse/nuxt", "@nuxt/image"],
 
   vuefire: {
     auth: {
@@ -43,4 +38,25 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-07-15",
+  image: {
+    // The screen sizes predefined by `@nuxt/image`:
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+      "2xl": 1536,
+    },
+    presets: {
+      companyAvatar: {
+        modifiers: {
+          fit: 'cover',
+          width: 100,
+          height: 100,
+        },
+      },
+    },
+  },
 });
