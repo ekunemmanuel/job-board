@@ -1,5 +1,5 @@
 <template>
-  <UContainer class="flex justify-center">
+  <UContainer class="flex justify-center p-0">
     <UCard class="max-w-[600px] flex-1">
       <template #header>
         <h2 class="text-lg font-semibold">{{ title }}</h2>
@@ -33,13 +33,18 @@
           <UButton type="submit" :loading> {{ buttonText }} </UButton>
         </UForm>
 
-
         <div class="flex justify-center">
           <UButton
+            class="text-sm text-center"
             variant="link"
+            :padded="false"
+            block
+            color="gray"
             :to="props.type === 'login' ? '/auth/register' : '/auth/login'"
           >
-            {{ linkText }}
+            <span>
+              {{ linkText }}
+            </span>
           </UButton>
         </div>
       </fieldset>

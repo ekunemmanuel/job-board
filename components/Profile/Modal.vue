@@ -24,6 +24,7 @@
             variant="outline"
             @click="deleteUserAccount"
             class="cursor-pointer"
+            icon="material-symbols-light:delete-outline-rounded"
             label="Delete Account"
           />
         </div>
@@ -49,7 +50,10 @@ const deleteUserAccount = async () => {
     const userId = user.value.uid;
 
     // Fetch user document to ensure it exists
-    const userDoc = await getDoc<User>("users", userId);
+    const userDoc = await getDoc<User>({
+      collectionName: "users",
+      docId: userId,
+    });
     if (!userDoc.data) {
       throw new Error(`User with ID ${userId} does not exist.`);
     }

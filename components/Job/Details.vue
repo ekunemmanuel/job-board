@@ -5,6 +5,7 @@
         label="Back to company"
         variant="outline"
         color="gray"
+        icon="material-symbols:arrow-back-ios-new-rounded"
         :to="`/dashboard/company/${job?.companyID}`"
       />
     </div>
@@ -24,6 +25,7 @@
           <UButton
             label="Edit"
             variant="outline"
+              icon="material-symbols:edit-rounded"
             :to="`/dashboard/job/${job?.id}/edit-job`"
           />
           <UButton
@@ -32,6 +34,7 @@
             color="rose"
             :to="`/dashboard/company/${job?.companyID}`"
             @click="del(job?.id!, job?.companyID!)"
+            icon="material-symbols-light:delete-outline-rounded"
           />
         </div>
       </div>
@@ -111,7 +114,10 @@ const { getDoc, removeDoc, modifyDoc } = useFirebase();
 const notification = useNotification();
 try {
   loading.value = true;
-  const { data } = await getDoc<Job>("jobs", props.id);
+  const { data } = await getDoc<Job>({
+    collectionName: "jobs",
+    docId: props.id,
+  });
 
   if (!data) {
     props.who == "admin"
@@ -121,7 +127,10 @@ try {
           message: "Job doesn't exist",
         });
   }
-  const { data: c } = await getDoc<Company>("companies", data.companyID);
+  const { data: c } = await getDoc<Company>({
+    collectionName: "companies",
+    docId: data.companyID,
+  });
   if (!c) {
     props.who == "admin"
       ? navigateTo("/dashboard")
@@ -145,17 +154,17 @@ try {
 
 async function del(jobId: string, companyId: string) {
   try {
-    await removeDoc("jobs", jobId);
-    await modifyDoc(
-      "companies",
-      companyId,
-      {},
-      {
-        arrayRemove: {
-          jobs: jobId,
-        },
-      }
-    );
+    await removeDoc({
+      collectionName: "jobs",
+      docId: jobId,
+    });
+    await modifyDoc({
+      collectionName: "companies",
+      docId: companyId,
+      data: {
+        updatedAt: new Date().toISOString(),
+      },
+    });
     navigateTo(`/dashboard/company/${companyId}`);
   } catch (error) {
     console.log(error);

@@ -54,7 +54,10 @@ try {
   jobs.value = await Promise.all(
     data.map(async (job) => {
       if (props.who === "user") {
-        const companyDoc = await getDoc<Company>("companies", job.companyID);
+        const companyDoc = await getDoc<Company>({
+          collectionName: "companies",
+          docId: job.companyID,
+        });
         return {
           ...job,
           companyName: companyDoc.data.name,
@@ -68,16 +71,14 @@ try {
   console.error(error);
 }
 
-
 const jobss = computed<Job[]>(() => {
   return !!props.search ? filteredJobs.value : jobs.value;
 });
 
 watchEffect(() => {
-
   filteredJobs.value = jobs.value.filter((job) => {
     if (!props.search) {
-      return []
+      return [];
     }
     return job.title.toLowerCase().includes(props.search.toLowerCase());
   });

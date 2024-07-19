@@ -26,7 +26,10 @@ const { getDoc } = useFirebase();
 if (props.id) {
   try {
     loading.value = true;
-    const { data } = await getDoc<Job>("jobs", props.id);
+    const { data } = await getDoc<Job>({
+      collectionName: "jobs",
+      docId: props.id,
+    });
     if (!data) {
       notification.error({
         title: "Error",

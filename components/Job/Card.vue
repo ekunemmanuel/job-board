@@ -19,7 +19,7 @@
           <h3 class="capitalize">{{ job?.companyName }}</h3>
           <p class="text-2xl font-bold capitalize">{{ job?.title }}</p>
         </div>
-        <div class="flex gap-2">
+        <div class="md:flex hidden gap-2 flex-wrap justify-end">
           <UButton
             variant="outline"
             icon="ic:round-remove-red-eye"
@@ -37,21 +37,14 @@
               label="edit"
               color="gray"
             />
-            <!-- <UButton
-              variant="outline"
-              color="rose"
-              icon="material-symbols-light:delete-outline-rounded"
-              label="delete"
-              @click="del(job?.id!, job?.companyID!)"
-            /> -->
           </div>
-          <UIcon
+          <!-- <UIcon
             v-else
             @click="hasLiked"
             :name="liked ? 'ic:round-favorite' : 'ic:round-favorite-border'"
             class="size-7 cursor-pointer"
             :class="[liked ? 'text-primary' : 'text-gray-500']"
-          />
+          /> -->
         </div>
       </div>
       <p class="flex justify-between flex-wrap items-center">
@@ -66,6 +59,30 @@
         <span class="text-gray-400">{{ time(job?.createdAt) }}</span>
       </p>
     </div>
+    <div class="flex md:hidden gap-2 flex-wrap justify-end self-end">
+      <UButton
+        variant="outline"
+        icon="ic:round-remove-red-eye"
+        @click="view(job?.id!)"
+        label="view"
+      />
+      <div class="flex gap-2 flex-wrap items-center justify-end" v-if="isAdmin">
+        <UButton
+          variant="outline"
+          icon="material-symbols:edit-rounded"
+          :to="`/dashboard/job/${job?.id}/edit-job`"
+          label="edit"
+          color="gray"
+        />
+      </div>
+      <!-- <UIcon
+            v-else
+            @click="hasLiked"
+            :name="liked ? 'ic:round-favorite' : 'ic:round-favorite-border'"
+            class="size-7 cursor-pointer"
+            :class="[liked ? 'text-primary' : 'text-gray-500']"
+          /> -->
+    </div>
   </div>
 
   <Suspense>
@@ -76,8 +93,6 @@
 <script lang="ts" setup>
 import type { Job } from "~/types";
 
-const { getDoc, removeDoc, modifyDoc } = useFirebase();
-const notification = useNotification();
 const liked = ref(false);
 
 const props = withDefaults(
@@ -108,31 +123,6 @@ function view(id: string) {
     navigateTo(`/dashboard/job/${id}`);
   } else {
     // open slider
-  }
-}
-async function del(jobId: string, companyId: string) {
-  try {
-    await removeDoc("jobs", jobId);
-    await modifyDoc(
-      "companies",
-      companyId,
-      {},
-      {
-        arrayRemove: {
-          jobs: jobId,
-        },
-      }
-    );
-    notification.success({
-      title: "Success",
-      message: "Job has beed deleted",
-    });
-  } catch (error) {
-    console.log(error);
-    notification.error({
-      title: "Error",
-      message: "Failed to delete job",
-    });
   }
 }
 

@@ -10,7 +10,10 @@ const loading = ref(false);
 const { id } = route.params;
 const company = ref<Company | undefined>();
 try {
-  const { data } = await getDoc<Company>("companies", id as string);
+  const { data } = await getDoc<Company>({
+    collectionName: "companies",
+    docId: id as string,
+  });
   if (!data) {
     navigateTo("/dashboard");
     notification.error({
@@ -36,17 +39,20 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   try {
     loading.value = true;
-    const docId = await createDoc("jobs", data);
-    await modifyDoc(
-      "companies",
-      companyId,
-      {},
-      {
+    const docId = await createDoc({
+      collectionName: "jobs",
+      data,
+    });
+    await modifyDoc({
+      collectionName: "companies",
+      docId: companyId,
+      data: {},
+      options: {
         arrayUnion: {
           jobs: docId,
         },
-      }
-    );
+      },
+    });
     notification.success({
       title: "Success",
       message: "Job added to company",
@@ -93,13 +99,14 @@ onBeforeUnmount(() => {
 
 <template>
   <UContainer class="pb-10 space-y-4">
-    <div class="space-y-2 flex justify-between">
+    <div class="space-y-2 flex gap-2 justify-between items-center flex-wrap-reverse">
       <h1 class="text-3xl">Create Job for {{ company?.name }}</h1>
 
       <UButton
         label="Back to company"
         variant="outline"
         color="gray"
+        icon="material-symbols:arrow-back-ios-new-rounded"
         :to="`/dashboard/company/${id}`"
       />
     </div>

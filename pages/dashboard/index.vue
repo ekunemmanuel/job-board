@@ -5,7 +5,12 @@
         <h1 class="text-xl font-bold">Your Companies</h1>
         <p>Select a company to create a JOB for</p>
       </div>
-      <UButton label="Create Company" color="gray" @click="isOpen = true" />
+      <UButton
+        label="Create Company"
+        color="gray"
+        @click="isOpen = true"
+        icon="material-symbols:add-rounded"
+      />
     </div>
     <Suspense>
       <Company v-model="isOpen" />

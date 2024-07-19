@@ -1,6 +1,6 @@
 <template>
   <UCard>
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-4 flex-wrap">
       <div class="overflow-hidden rounded-full">
         <UAvatar
           :ui="{
@@ -29,14 +29,20 @@
       </div>
     </div>
     <template #footer>
-      <div class="flex justify-end gap-2">
+      <div class="flex sm:justify-end gap-2 sm:flex-row flex-col">
         <UButton
           :to="`/dashboard/company/${company.id}`"
           variant="outline"
+          class="block text-center"
           icon="ic:round-remove-red-eye"
           >View</UButton
         >
-        <UButton variant="outline" color="gray" @click="$emit('edit', company)"
+        <UButton
+          variant="outline"
+          color="gray"
+          @click="$emit('edit', company)"
+          class="block text-center"
+          icon="material-symbols:edit-rounded"
           >Edit</UButton
         >
         <UButton
@@ -44,6 +50,8 @@
           color="rose"
           @click="deleteCompany(company.id!)"
           :loading
+          class="block text-center"
+          icon="material-symbols-light:delete-outline-rounded"
         >
           Delete
         </UButton>
@@ -71,11 +79,19 @@ const emit = defineEmits<{
 async function deleteCompany(docId: string) {
   try {
     loading.value = props.company.id === docId;
-    await removeDoc("companies", docId);
+    await removeDoc({
+      collectionName: "companies",
+      docId,
+    });
 
     // Remove related job documents
     const jobRemovalPromises =
-      props.company.jobs?.map((jobId) => removeDoc("jobs", jobId)) || [];
+      props.company.jobs?.map((jobId) =>
+        removeDoc({
+          collectionName: "jobs",
+          docId: jobId,
+        })
+      ) || [];
     await Promise.all(jobRemovalPromises);
     notification.success({
       title: "Success",

@@ -8,7 +8,10 @@ const { id } = route.params;
 const company = ref<Company | undefined>();
 const companyId = id as string;
 try {
-  const { data } = await getDoc<Company>("companies", id as string);
+  const { data } = await getDoc<Company>({
+    collectionName: "companies",
+    docId: id as string,
+  });
   if (!data) {
     notification.error({
       title: "Error",
@@ -29,7 +32,7 @@ try {
 </script>
 <template>
   <UContainer class="space-y-4">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center flex-wrap">
       <div>
         <div class="space-y-2">
           <h2 class="text-5xl font-bold capitalize">{{ company?.name }}</h2>
@@ -46,11 +49,20 @@ try {
           >
         </div>
       </div>
-      <div class="gap-4 flex">
-        <UButton :to="`/dashboard`" variant="outline" color="gray">
+      <div class="gap-4 flex flex-col">
+        <UButton
+          :to="`/dashboard`"
+          variant="outline"
+          color="gray"
+          icon="material-symbols:arrow-back-ios-new-rounded"
+        >
           Back
         </UButton>
-        <UButton :to="`/dashboard/company/${id}/create-job`" variant="outline">
+        <UButton
+          :to="`/dashboard/company/${id}/create-job`"
+          variant="outline"
+          icon="material-symbols:add-rounded"
+        >
           Create Job
         </UButton>
       </div>

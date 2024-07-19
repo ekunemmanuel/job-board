@@ -14,12 +14,18 @@ const company = ref<Company | undefined>();
 const job = ref<Job | undefined>();
 try {
   loading.value = true;
-  const { data } = await getDoc<Job>("jobs", jobId);
+  const { data } = await getDoc<Job>({
+    collectionName: "jobs",
+    docId: jobId,
+  });
   if (!data) {
     navigateTo("/dasboard/job");
   }
 
-  const { data: c } = await getDoc<Company>("companies", data.companyID);
+  const { data: c } = await getDoc<Company>({
+    collectionName: "companies",
+    docId: data.companyID,
+  });
   if (!c) {
     navigateTo("/dasboard");
   }
@@ -45,7 +51,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
   try {
     loading.value = true;
-    await modifyDoc("jobs", jobId, data);
+    await modifyDoc({
+      collectionName: "jobs",
+      docId: jobId,
+      data,
+    });
 
     notification.success({
       title: "Success",
@@ -101,6 +111,7 @@ onBeforeUnmount(() => {
         label="Back to company"
         variant="outline"
         color="gray"
+        icon="material-symbols:arrow-back-ios-new-rounded"
         :to="`/dashboard/company/${job?.companyID}`"
       />
     </div>

@@ -113,9 +113,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 async function createCompany(data: Company) {
   try {
     loading.value = true;
-    const docId = await createDoc(collectionName, {
-      ...data,
-      createdAt: new Date().toISOString(),
+    const docId = await createDoc({
+      collectionName,
+      data: {
+        ...data,
+        createdAt: new Date().toISOString(),
+      },
     });
     if (!docId) throw new Error();
     notifySuccess("Company has been created");
@@ -127,9 +130,13 @@ async function createCompany(data: Company) {
 async function updateCompany(docId: string, data: Company) {
   try {
     loading.value = true;
-    await modifyDoc(collectionName, docId, {
-      ...data,
-      updatedAt: new Date().toISOString(),
+    await modifyDoc({
+      collectionName,
+      docId,
+      data: {
+        ...data,
+        updatedAt: new Date().toISOString(),
+      },
     });
     notifySuccess("Company has been updated");
   } catch (error) {

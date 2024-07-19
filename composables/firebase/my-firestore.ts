@@ -104,7 +104,13 @@ export const useMyFirestore = () => {
    * @param {string} docId - The unique identifier of the document to retrieve.
    * @returns {Promise<{data: any, pending: boolean}>} A promise that resolves with the document data and a pending state.
    */
-  async function getDoc<T>(collectionName: string, docId: string) {
+  async function getDoc<T>({
+    collectionName,
+    docId,
+  }: {
+    collectionName: string;
+    docId: string;
+  }) {
     try {
       const docRef = doc(db, collectionName, docId);
       const { data, pending, promise } = useDocument(docRef);
@@ -125,12 +131,17 @@ export const useMyFirestore = () => {
    * @param {ArrayOperations} [options] - Optional parameters for array operations.
    * @returns {Promise<void>} A promise that resolves when the document is successfully updated.
    */
-  async function modifyDoc(
-    collectionName: string,
-    docId: string,
-    data: Record<string, any>,
-    options?: ArrayOperations
-  ): Promise<void> {
+  async function modifyDoc({
+    collectionName,
+    docId,
+    data,
+    options,
+  }: {
+    collectionName: string;
+    docId: string;
+    data: Record<string, any>;
+    options?: ArrayOperations;
+  }): Promise<void> {
     try {
       const docRef = doc(db, collectionName, docId);
       const updateData = { ...data };
@@ -162,10 +173,13 @@ export const useMyFirestore = () => {
    * @param {string} docId - The ID of the document to delete.
    * @returns {Promise<void>} A promise that resolves when the document is successfully deleted.
    */
-  async function removeDoc(
-    collectionName: string,
-    docId: string
-  ): Promise<void> {
+  async function removeDoc({
+    collectionName,
+    docId,
+  }: {
+    collectionName: string;
+    docId: string;
+  }): Promise<void> {
     try {
       const docRef = doc(db, collectionName, docId);
       await deleteDoc(docRef);
@@ -183,11 +197,15 @@ export const useMyFirestore = () => {
    * @param {string} [docId] - Optional. The custom ID to use for the new document.
    * @returns {Promise<string>} A promise that resolves with the ID of the added document.
    */
-  async function createDoc(
-    collectionName: string,
-    data: Record<string, any>,
-    docId?: string
-  ): Promise<string> {
+  async function createDoc({
+    collectionName,
+    data,
+    docId,
+  }: {
+    collectionName: string;
+    data: Record<string, any>;
+    docId?: string;
+  }): Promise<string> {
     try {
       if (docId) {
         const docRef = doc(db, collectionName, docId);
