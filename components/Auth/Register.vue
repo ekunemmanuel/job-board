@@ -32,14 +32,14 @@ async function register(data: Form) {
 
     const user = usercred.user;
     const idToken = await user.getIdToken();
-    const role = "admin";
-    await $fetch("/api/v1/roles", {
-      method: "POST",
-      body: {
-        idToken,
-        role,
-      },
-    });
+    // const role = "admin";
+    // await $fetch("/api/v1/roles", {
+    //   method: "POST",
+    //   body: {
+    //     idToken,
+    //     role,
+    //   },
+    // });
     const displayName = `${firstname?.toLowerCase()} ${lastname?.toLowerCase()}`;
 
     if (!user) return;
@@ -51,7 +51,7 @@ async function register(data: Form) {
       email: email,
       uid: user.uid,
       name: displayName,
-      role,
+      // role,
       createdAt: new Date().toISOString(),
     };
     await setDoc(userRef, newUser);

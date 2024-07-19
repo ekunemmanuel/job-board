@@ -1,18 +1,14 @@
 export const useFirebase = () => {
-  const { getCollection, createDoc, getDoc, modifyDoc, removeDoc } =
-    useMyFirestore();
+  const firestore = useMyFirestore();
 
   const { deleteFile, downloadFile, uploadFile, moveFile } = useMyStorage();
-
+  const auth = useMyAuth();
   return {
-    getCollection,
-    createDoc,
-    getDoc,
-    modifyDoc,
-    removeDoc,
+    ...firestore,
     deleteFile,
     downloadFile,
     uploadFile,
     moveFile,
+    ...auth,
   };
 };

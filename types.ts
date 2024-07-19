@@ -1,3 +1,4 @@
+import { z } from "zod";
 export interface Form {
   email: string;
   password: string;
@@ -10,20 +11,23 @@ export interface User {
   uid?: string;
   email: string;
   name: string;
-  role: string;
+  // role: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
+type Remote = "On-site" | "Remote" | "Hybrid";
+type Type = "Project" | "Part-time" | "Full-time";
 // Job type
 export interface Job {
   id?: string;
   companyID: string;
-  jobTitle: string;
-  remote: "On-site" | "Remote" | "Hybrid";
-  type: "Project" | "Part-time" | "Full-time";
+  companyName?: string;
+  title: string;
+  remote: Remote;
+  type: Type;
   salary: {
-    amount: number;
+    amount: string;
     frequency: "Monthly" | "Yearly";
   };
   location: {
@@ -31,11 +35,10 @@ export interface Job {
     state: string;
     city: string;
   };
-  contactPerson: {
+  contact: {
     email: string;
     name: string;
-    number: string;
-    image: string; // URL
+    social: string; // URL
   };
   description: string;
   createdAt?: string;
@@ -55,33 +58,34 @@ export interface Company {
   updatedAt?: string;
 }
 
-// Job summary type for company job page
-export interface JobSummary {
-  companyName: string;
-  companyLogo: string;
-  jobID: string;
-  jobTitle: string;
-  remote: "On-site" | "Remote" | "Hybrid";
-  type: "Project" | "Part-time" | "Full-time";
-  location: {
-    country: string;
-    state: string;
-    city: string;
+export type Schema = z.output<typeof schema>;
+
+export type State = {
+  title?: string;
+  remote?: string;
+  type?: string;
+  salary: {
+    amount?: string;
+    frequency?: string;
   };
-  timeOfCreation?: string;
+  location: {
+    country?: string;
+    state?: string;
+    city?: string;
+  };
+  contact: {
+    email?: string;
+    name?: string;
+    social?: string; // URL
+  };
+  description?: string;
+  createdAt?: string;
   updatedAt?: string;
-}
+};
 
-// Company job page type
-export interface CompanyJobPage {
-  companyID: string;
-  jobs: JobSummary[];
-}
-
-export interface ComapanyPage {
-  id?: string;
-  name: string;
-  // logo: string;
-  website: string;
-  createdBy: string;
+export interface BatchOperations {
+  type: "set" | "update" | "delete";
+  collection: string;
+  docId: string;
+  data?: any;
 }

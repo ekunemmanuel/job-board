@@ -10,9 +10,10 @@
           }"
           :alt="company.name"
           size="3xl"
+          class="uppercase font-bold"
         />
       </div>
-      <div class="space-y-2">
+      <div class="">
         <h2 class="text-3xl font-bold capitalize">{{ company.name }}</h2>
         <UButton
           variant="link"
@@ -22,13 +23,19 @@
           :external="true"
           leading-icon="material-symbols-light:link"
           trailing-icon="prime:external-link"
+          :padded="false"
           >{{ company.website }}</UButton
         >
       </div>
     </div>
     <template #footer>
       <div class="flex justify-end gap-2">
-        <UButton :to="`/dashboard/company/${company.id}`" variant="outline">View</UButton>
+        <UButton
+          :to="`/dashboard/company/${company.id}`"
+          variant="outline"
+          icon="ic:round-remove-red-eye"
+          >View</UButton
+        >
         <UButton variant="outline" color="gray" @click="$emit('edit', company)"
           >Edit</UButton
         >
@@ -63,8 +70,13 @@ const emit = defineEmits<{
 
 async function deleteCompany(docId: string) {
   try {
-    await removeDoc("companies", docId);
     loading.value = props.company.id === docId;
+    await removeDoc("companies", docId);
+
+    // Remove related job documents
+    const jobRemovalPromises =
+      props.company.jobs?.map((jobId) => removeDoc("jobs", jobId)) || [];
+    await Promise.all(jobRemovalPromises);
     notification.success({
       title: "Success",
       message: "Company info has been deleted successfully",

@@ -16,9 +16,9 @@
             icon: {
               trailing: {
                 pointer: '',
-                padding:{
-                  sm:'px-3.5'
-                }
+                padding: {
+                  sm: 'px-3.5',
+                },
               },
             },
           }"
@@ -33,59 +33,48 @@
             />
           </template>
         </UInput>
-
- 
       </UContainer>
     </section>
-    <section class="bg-primary/20 py-4">
+    <section class="bg-primary/20 py-4 min-h-[calc(100vh-288px)]">
       <UContainer class="space-y-2">
         <h2 class="text-xl font-bold">Recent Jobs</h2>
 
-        <div>
-          <ul class="space-y-4">
-            <li v-for="(j, index) in jobs" :key="index">
-              <JobCard who="admin" :job="j" />
-            </li>
-          </ul>
-        </div>
+        <Suspense>
+          <JobList :search />
+          <template #fallback> loading... </template>
+        </Suspense>
       </UContainer>
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { JobSummary } from "~/types";
-
 const isSearching = ref(false);
-const notification = useNotification();
 const search = ref("");
-const job: JobSummary = {
-  companyLogo: "https://via.placeholder.com/150",
-  companyName: "Amazon",
-  jobID: "Amazon12",
-  jobTitle: "Software Engineer",
-  location: {
-    city: "Lagos",
-    state: "Lagos",
-    country: "Nigeria",
-  },
-  type: "Full-time",
-  timeOfCreation: "2 days",
-  remote: "Hybrid",
-};
 
-const jobs = ref<JobSummary[]>([
-  job,
-  job,
-  job,
-  job,
-  job,
-  job,
-  job,
-  job,
-  job,
-  job,
-]);
+useHead({
+  title: "Job Board",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Job Board is a place where you see available jobs and a place where you can add jobs",
+      value: {
+        name: "description",
+        content:
+          "Job Board is a place where you see available jobs and a place where you can add jobs",
+      },
+    },
+  ],
+});
+
+watch(search, (newVal) => {
+  if (newVal) {
+    isSearching.value = true;
+  } else {
+    isSearching.value = false;
+  }
+});
 </script>
 
 <style></style>

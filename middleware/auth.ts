@@ -21,24 +21,42 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return;
   }
 
-  const idTokenResult = await user.getIdTokenResult();
-  const role = idTokenResult.claims.role;
+  // const idTokenResult = await user.getIdTokenResult();
+  // const role = idTokenResult.claims.role;
 
-  const isAdminRoute = to.path.startsWith("/admin");
+  // const isAdminRoute = to.path.startsWith("/dashboard");
 
-  if (role === "admin" && !isAdminRoute) {
+  // if (role === "admin" && !isAdminRoute) {
+  //   notification.error({
+  //     title: "Unauthorized",
+  //     message: "You are not authorized to access this page",
+  //   });
+  //   return navigateTo("/dashboard");
+  // }
+
+  // if (!role && to.path !== "/") {
+  //   notification.error({
+  //     title: "Unauthorized",
+  //     message: "You are not authorized to access this page",
+  //   });
+  //   return navigateTo("/");
+  // }
+
+  const isAdminRoute = to.path.startsWith("/dashboard");
+
+  if (!isAdminRoute) {
     notification.error({
       title: "Unauthorized",
-      message: "You are not authorized to access this page",
+      message: "You are not authorized to access ad this page",
     });
-    return navigateTo("/admin");
+    return navigateTo("/dashboard");
   }
 
-  if (!role && to.path !== "/") {
-    notification.error({
-      title: "Unauthorized",
-      message: "You are not authorized to access this page",
-    });
-    return navigateTo("/");
-  }
+  // if (to.path !== "/") {
+  //   notification.error({
+  //     title: "Unauthorized",
+  //     message: "You are not authorized to access this page",
+  //   });
+  //   return navigateTo("/");
+  // }
 });

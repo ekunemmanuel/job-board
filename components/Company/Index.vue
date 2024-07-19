@@ -14,26 +14,29 @@ import type { Company } from "~/types";
 
 const { getCollection } = useFirebase();
 
-const createdBy = useUser().value;
+const user = useCurrentUser();
+// const createdBy = useUser().value;
 const collectionName = "companies";
-const { data, pending } = await getCollection<Company>(
+const { data, pending } = await getCollection<Company>({
   collectionName,
-  "companies",
-  [
+  ssrKey: collectionName,
+  whereClauses: [
+    {
+      field: "createdBy",
+      operator: "==",
+      value: user.value?.uid,
+    },
+  ],
+  order: [
     {
       field: "createdAt",
       direction: "desc",
     },
   ],
-  [
-    {
-      field: "createdBy",
-      operator: "==",
-      value: createdBy,
-    },
-  ]
-);
+});
+
 const companies = ref<Company[]>(data.value);
+// const companies = useCompanies().value;
 
 const editCompany = ref<Company | undefined>();
 

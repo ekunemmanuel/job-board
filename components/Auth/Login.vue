@@ -21,14 +21,15 @@ async function login(data: Form) {
     if (!auth) return;
     const usercred = await signInWithEmailAndPassword(auth, email, password);
     const user = usercred.user;
-    const idTokenResult = await user.getIdTokenResult();
-    const role = idTokenResult.claims.role;
+    // const idTokenResult = await user.getIdTokenResult();
+    // const role = idTokenResult.claims.role;
     
     if(redirect && typeof redirect === "string") {
       navigateTo(redirect);
       return;
     }
-    navigateTo(role === "admin" ? "/admin" : "/");
+    navigateTo("/dashboard");
+    // navigateTo(role === "admin" ? "/dashboard" : "/");
 
     notification.success({
       title: "Login Success",

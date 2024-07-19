@@ -1,51 +1,52 @@
 <template>
-  <UCard>
-    <template #header>
-      <h2 class="text-lg font-semibold">{{ title }}</h2>
-      <p class="text-sm text-gray-400">{{ description }}</p>
-    </template>
-    <fieldset :disabled="loading" class="space-y-4">
-      <UForm
-        :schema="schema"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
-      >
-        <template v-for="(value, key) in state" :key="key">
-          <UFormGroup
-            :ui="{
-              label: {
-                base: 'text-sm font- semibold capitalize',
-              },
-            }"
-            :label="key"
-            :name="key"
-            required
-          >
-            <UInput
-              v-model="state[key]"
-              :placeholder="key"
-              :type="getFieldType(key)"
-            />
-          </UFormGroup>
-        </template>
-        <UButton type="submit" :loading> {{ buttonText }} </UButton>
-      </UForm>
-
-      <!-- <UDivider label="OR" /> -->
-
-      <div class="flex justify-center">
-        <UButton
-          variant="link"
-          :to="props.type === 'login' ? '/auth/register' : '/auth/login'"
+  <UContainer class="flex justify-center">
+    <UCard class="max-w-[600px] flex-1">
+      <template #header>
+        <h2 class="text-lg font-semibold">{{ title }}</h2>
+        <p class="text-sm text-gray-400">{{ description }}</p>
+      </template>
+      <fieldset :disabled="loading" class="space-y-4">
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
         >
-          {{ linkText }}
-        </UButton>
-      </div>
-    </fieldset>
+          <template v-for="(value, key) in state" :key="key">
+            <UFormGroup
+              :ui="{
+                label: {
+                  base: 'text-sm font- semibold capitalize',
+                },
+              }"
+              :label="key"
+              :name="key"
+              required
+            >
+              <UInput
+                v-model="state[key]"
+                :placeholder="key"
+                :type="getFieldType(key)"
+              />
+            </UFormGroup>
+          </template>
+          <UButton type="submit" :loading> {{ buttonText }} </UButton>
+        </UForm>
 
-    <Loading v-model="loading" />
-  </UCard>
+
+        <div class="flex justify-center">
+          <UButton
+            variant="link"
+            :to="props.type === 'login' ? '/auth/register' : '/auth/login'"
+          >
+            {{ linkText }}
+          </UButton>
+        </div>
+      </fieldset>
+
+      <Loading v-model="loading" />
+    </UCard>
+  </UContainer>
 </template>
 
 <script lang="ts" setup>

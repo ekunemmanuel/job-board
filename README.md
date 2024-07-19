@@ -1,75 +1,73 @@
-# Nuxt UI Minimal Starter
+// const companies = useCompanies();
+// const data = companies.value.find((company) => {
+//   return company.id === id;
+// });
 
-Look at [Nuxt docs](https://nuxt.com/docs/getting-started/introduction) and [Nuxt UI docs](https://ui.nuxt.com) to learn more.
+// const jobs = useJobs()
 
-## Setup
+// const j = jobs.value.find((job) => {
 
-Make sure to install the dependencies:
+// })
+const job: Job = {
+  companyName: "'PdUIof6kaj6ANQSlYPiU'",
+  id: "PdUIof6kaj6ANQSlYPiU",
+  title: "Software Engineer",
+  location: {
+    city: "Lagos",
+    state: "Lagos",
+    country: "Nigeria",
+  },
+  type: "Full-time",
+  createdAt: "",
+  remote: "Hybrid",
+  companyID: "",
+  contact: {
+    email: "",
+    name: "",
+    social: "",
+  },
+  description: "",
+  salary: {
+    amount: "2000",
+    frequency: "Monthly",
+  },
+};
 
-```bash
-# npm
-npm install
+     <!-- <div>
+          <ul class="space-y-4">
+            <li v-for="(j, index) in jobs" :key="index">
+              <JobCard :job="j" />
+            </li>
+          </ul>
+        </div> -->
 
-# pnpm
-pnpm install
 
-# yarn
-yarn install
+// const jobs = ref<Job[]>([]);
 
-# bun
-bun install
-```
+// try {
+//   const { data } = await getCollection<Job>({
+//     collectionName: "jobs",
+//     ssrKey: "jobs",
+//     order: [
+//       {
+//         field: "createdAt",
+//         direction: "desc",
+//       },
+//     ],
+//   });
 
-## Development Server
+//   jobs.value = await Promise.all(
+//     data.value.map(async (job) => {
+//       const companyDoc = await getDoc<Company>("companies", job.companyID);
+//       return {
+//         ...job,
+//         id: job.id,
+//         companyName: companyDoc.data.name,
+//       };
+//     })
+//   );
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+//   // can you fix this for me so it will return the data not promise
+// } catch (error) {
+//   console.log(error);
+// }

@@ -54,8 +54,8 @@ const { createDoc, modifyDoc } = useFirebase();
 const isOpen = defineModel({
   default: false,
 });
-
-const createdBy = useUser().value;
+const user = useCurrentUser();
+// const createdBy = useUser().value;
 const collectionName = "companies";
 
 interface Props {
@@ -96,7 +96,7 @@ type Schema = z.output<typeof schema>;
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   const data: Company = {
-    createdBy,
+    createdBy: user.value?.uid!,
     name: event.data.name.toLowerCase(),
     website: event.data.website.toLowerCase(),
   };
