@@ -16,6 +16,10 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui", "nuxt-vuefire", "@vueuse/nuxt", "@nuxt/image"],
 
   vuefire: {
+    auth: {
+      enabled: true,
+      sessionCookie: true,
+    },
     config: {
       apiKey: process.env.apiKey,
       authDomain: process.env.authDomain,
